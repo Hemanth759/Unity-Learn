@@ -149,8 +149,8 @@ MonoBehaviour:
     type: 3}
   spawnPosition: {fileID: 753627615}
   target: {fileID: 620903247}
-  turningSpeed: 10
-  speed: 10
+  turningSpeed: 2
+  speed: 20
 --- !u!1 &620903246 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1043457633746962670, guid: f8df63ccbdfa54d54833de3ea7e2ce5a,
@@ -621,27 +621,27 @@ PrefabInstance:
     - target: {fileID: 6880403096463785013, guid: e57a33c6f3b0e4cb2a2af014c265b239,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.009813031
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6880403096463785013, guid: e57a33c6f3b0e4cb2a2af014c265b239,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6880403096463785013, guid: e57a33c6f3b0e4cb2a2af014c265b239,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9999519
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6880403096463785013, guid: e57a33c6f3b0e4cb2a2af014c265b239,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: -1.125
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6880403096463785013, guid: e57a33c6f3b0e4cb2a2af014c265b239,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e57a33c6f3b0e4cb2a2af014c265b239, type: 3}

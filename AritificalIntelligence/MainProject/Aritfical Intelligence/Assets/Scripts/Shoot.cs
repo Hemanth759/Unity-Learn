@@ -7,7 +7,7 @@ public class Shoot : MonoBehaviour
     public Transform spawnPosition;
     public Transform target;
     public float turningSpeed = 2f;
-    public float speed = 10f;
+    public float speed = 15f;
 
     // private variables
     private GameObject parent;
@@ -27,10 +27,21 @@ public class Shoot : MonoBehaviour
         Vector3 direction = (target.position - parent.transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
         parent.transform.rotation = Quaternion.Slerp(parent.transform.rotation, lookRotation, turningSpeed * Time.deltaTime);
+
+        float? angle = RotateTurrent();
     }
 
     void Fire() {
         GameObject shell = Instantiate(bulletPrefab, spawnPosition.position, spawnPosition.rotation);
+    }
+
+    float? RotateTurrent() {
+        float? angle = CalculateAngle(true);
+
+        if (angle != null) {
+            this.transform.localEulerAngles = new Vector3(360 - (float)angle, 0f, 0f);
+        }
+        return angle;
     }
 
     float? CalculateAngle(bool low) {
@@ -48,9 +59,9 @@ public class Shoot : MonoBehaviour
             float lowAngle = sSqr - root;
 
             if (low)
-                return Mathf.Atan2(lowAngle, gravity * x);
+                return Mathf.Atan2(lowAngle, gravity * x) * Mathf.Rad2Deg;
             else 
-                return Mathf.Atan2(highAngle, gravity * x);
+                return Mathf.Atan2(highAngle, gravity * x) * Mathf.Rad2Deg;
         }
         return null;
     }
