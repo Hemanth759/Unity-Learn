@@ -33,13 +33,14 @@ public class Shoot : MonoBehaviour
 
     void Fire() {
         GameObject shell = Instantiate(bulletPrefab, spawnPosition.position, spawnPosition.rotation);
+        shell.GetComponent<Rigidbody>().velocity = speed * shell.transform.forward;
     }
 
     float? RotateTurrent() {
         float? angle = CalculateAngle(true);
 
         if (angle != null) {
-            this.transform.localEulerAngles = new Vector3(360 - (float)angle, 0f, 0f);
+            this.transform.localEulerAngles = new Vector3(360f - (float)angle, 0f, 0f);
         }
         return angle;
     }
@@ -49,7 +50,7 @@ public class Shoot : MonoBehaviour
         float y = targetDir.y;
         targetDir.y = 0f;
         float x = targetDir.magnitude;
-        float gravity = 9.8f;
+        float gravity = 9.81f;
         float sSqr = speed * speed;
         float underSquareRoot = (sSqr * sSqr) - gravity * (gravity * x * x - 2 * y * sSqr);
 
@@ -59,9 +60,9 @@ public class Shoot : MonoBehaviour
             float lowAngle = sSqr - root;
 
             if (low)
-                return Mathf.Atan2(lowAngle, gravity * x) * Mathf.Rad2Deg;
+                return (Mathf.Atan2(lowAngle, gravity * x) * Mathf.Rad2Deg);
             else 
-                return Mathf.Atan2(highAngle, gravity * x) * Mathf.Rad2Deg;
+                return (Mathf.Atan2(highAngle, gravity * x) * Mathf.Rad2Deg);
         }
         return null;
     }
