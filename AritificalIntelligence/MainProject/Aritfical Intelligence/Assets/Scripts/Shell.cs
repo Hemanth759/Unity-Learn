@@ -10,6 +10,7 @@ public class Shell : MonoBehaviour
 
     // // private varaibles
     // private float gravity = -9.8f;
+    private Rigidbody rb;
 
 
     void OnCollisionEnter(Collision col)
@@ -27,6 +28,7 @@ public class Shell : MonoBehaviour
     {
         // speedZ = force / mass;
         // speedY = 0f;
+        rb = this.GetComponent<Rigidbody> ();
     }
 
     // Update is called once per frame
@@ -34,5 +36,6 @@ public class Shell : MonoBehaviour
     {
         // speedY += gravity / mass;
         // this.transform.Translate(0f, speedY * Time.deltaTime, speedZ * Time.deltaTime);
+        this.transform.forward = rb.velocity;
     }
 }

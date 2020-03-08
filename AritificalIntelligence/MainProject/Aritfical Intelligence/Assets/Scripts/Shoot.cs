@@ -11,32 +11,42 @@ public class Shoot : MonoBehaviour
 
     // private variables
     private GameObject parent;
+    private bool canShoot;
 
     // Start is called before the first frame update is happened
     void Start()
     {
         parent = this.transform.parent.transform.parent.gameObject;
+        canShoot = true;
     }
 
     // Update is called once per frame
     void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-            Fire();
-        
+    {   
         Vector3 direction = (target.position - parent.transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
         parent.transform.rotation = Quaternion.Slerp(parent.transform.rotation, lookRotation, turningSpeed * Time.deltaTime);
 
         float? angle = RotateTurrent();
+
+        if (Vector3.Angle(direction, parent.transform.forward) < 10)
+            Fire();
     }
 
-    void Fire() {
-        GameObject shell = Instantiate(bulletPrefab, spawnPosition.position, spawnPosition.rotation);
-        shell.GetComponent<Rigidbody>().velocity = speed * this.transform.forward;
+    private void CanShootAgain() {
+        canShoot = true;
     }
 
-    float? RotateTurrent() {
+    private void Fire() {
+        if (canShoot) {
+            GameObject shell = Instantiate(bulletPrefab, spawnPosition.position, spawnPosition.rotation);
+            shell.GetComponent<Rigidbody>().velocity = speed * this.transform.forward;
+            canShoot = false;
+            Invoke("CanShootAgain", 0.2f);
+        }
+    }
+
+    private float? RotateTurrent() {
         float? angle = CalculateAngle(true);
 
         if (angle != null) {
@@ -45,7 +55,7 @@ public class Shoot : MonoBehaviour
         return angle;
     }
 
-    float? CalculateAngle(bool low) {
+    private float? CalculateAngle(bool low) {
         Vector3 targetDir = target.position - this.transform.position;
         float y = targetDir.y;
         targetDir.y = 0f;
