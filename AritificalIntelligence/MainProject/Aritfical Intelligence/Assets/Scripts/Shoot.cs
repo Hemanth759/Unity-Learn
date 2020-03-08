@@ -12,7 +12,7 @@ public class Shoot : MonoBehaviour
     // private variables
     private GameObject parent;
 
-    // Start is called before the first frame update
+    // Start is called before the first frame update is happened
     void Start()
     {
         parent = this.transform.parent.transform.parent.gameObject;
