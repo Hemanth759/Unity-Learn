@@ -150,7 +150,7 @@ MonoBehaviour:
   spawnPosition: {fileID: 753627615}
   target: {fileID: 620903247}
   turningSpeed: 2
-  speed: 20
+  speed: 15
 --- !u!1 &620903246 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1043457633746962670, guid: f8df63ccbdfa54d54833de3ea7e2ce5a,
