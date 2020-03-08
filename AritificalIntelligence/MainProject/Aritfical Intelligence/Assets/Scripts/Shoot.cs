@@ -33,7 +33,7 @@ public class Shoot : MonoBehaviour
 
     void Fire() {
         GameObject shell = Instantiate(bulletPrefab, spawnPosition.position, spawnPosition.rotation);
-        shell.GetComponent<Rigidbody>().velocity = speed * shell.transform.forward;
+        shell.GetComponent<Rigidbody>().velocity = speed * this.transform.forward;
     }
 
     float? RotateTurrent() {
@@ -46,16 +46,16 @@ public class Shoot : MonoBehaviour
     }
 
     float? CalculateAngle(bool low) {
-        Vector3 targetDir = target.transform.position - this.transform.position;
+        Vector3 targetDir = target.position - this.transform.position;
         float y = targetDir.y;
         targetDir.y = 0f;
         float x = targetDir.magnitude;
         float gravity = 9.81f;
         float sSqr = speed * speed;
-        float underSquareRoot = (sSqr * sSqr) - gravity * (gravity * x * x - 2 * y * sSqr);
+        float underTheSqrRoot = (sSqr * sSqr) - gravity * (gravity * x * x + 2 * y * sSqr);
 
-        if (underSquareRoot >= 0) {
-            float root = Mathf.Sqrt(underSquareRoot);
+        if (underTheSqrRoot >= 0f) {
+            float root = Mathf.Sqrt(underTheSqrRoot);
             float highAngle = sSqr + root;
             float lowAngle = sSqr - root;
 
