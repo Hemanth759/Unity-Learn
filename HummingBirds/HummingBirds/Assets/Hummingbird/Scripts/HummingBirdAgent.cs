@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.MLAgents;
+using Unity.MLAgents.Sensors;
 using UnityEngine;
 
 /// <summary>
@@ -142,6 +143,111 @@ public class HummingBirdAgent : Agent
 
         // Apply the new rotation
         transform.rotation = Quaternion.Euler(pitch, yaw, 0f);
+    }
+
+    /// <summary>
+    /// Collect vector observations from the environment
+    /// </summary>
+    /// <param name="sensor">The vector sersor</param>
+    public override void CollectObservations(VectorSensor sensor) 
+    {
+        // If the nearest flower is null, Observe an empty array and return early
+        if (nearestFlower == null) 
+        {
+            sensor.AddObservation(new float[10]);
+            return;
+        }
+
+        // Observe the agent's local rotation (4 Observaions)
+        sensor.AddObservation(transform.localRotation.normalized);
+
+        // Get a vector from the beakTip to the nearest flower
+        Vector3 toFlower = nearestFlower.FlowerCenterPosition - beakTip.position;
+
+        // Observe a normalized vector pointing to the nearest flower (3 observations)
+        sensor.AddObservation(toFlower.normalized);
+
+        // Observe a dot product that indicates whether the beaktip is in front of the flower or behind the flower (1 observation)
+        // (+1 indicates that the beakTip is infront of the flower, -1 indicates that the beakTip is behind the flower)
+        sensor.AddObservation(Vector3.Dot(toFlower.normalized, -nearestFlower.FlowerUpVector.normalized));
+
+        // Observe a dot product that indicates whether the beaktip is pointing towards the flower (1 observation)
+        // (+1 means that the beaktip is pointing directly at the flower, -1 means directly away)
+        sensor.AddObservation(Vector3.Dot(beakTip.forward.normalized, -nearestFlower.FlowerUpVector.normalized));
+
+        // Observe the realative distance from the beaktip to the flower (1 observation)
+        sensor.AddObservation(toFlower.magnitude / FlowerArea.areaDiameter);
+
+        // 10 Total observations
+    }
+
+    /// <summary>
+    /// When behaviour type is set to "heuristic only" on the agent's Behaviour parameters,
+    /// this function will be called. Its return values will be fed into 
+    /// <see cref="OnActionReceived(float[])"> instead of using the neural networks
+    /// </summary>
+    /// <param name="actionsOut">An output action array</param>
+    public override void Heuristic(float[] actionsOut)
+    {
+        // Create place holders for all movements and turnings
+        Vector3 forward = Vector3.zero;
+        Vector3 left = Vector3.zero;
+        Vector3 up = Vector3.zero;
+        float pitch = 0f;
+        float yaw = 0f;
+
+        // Convert keyboard inputs to movements and turning 
+        // All values should be between -1 and +1
+
+        // Forward/Backwards
+        if (Input.GetKey(KeyCode.W)) forward = transform.forward;
+        else if(Input.GetKey(KeyCode.S)) forward = -transform.forward;
+
+        // Left/Right
+        if (Input.GetKey(KeyCode.A)) left = -transform.right;
+        else if (Input.GetKey(KeyCode.D)) left = transform.right;
+
+        // Up/Down
+        if (Input.GetKey(KeyCode.E)) up = transform.up;
+        else if (Input.GetKey(KeyCode.C)) up = -transform.up;
+
+        // Pitch up/down
+        if (Input.GetKey(KeyCode.UpArrow)) pitch = 1f;
+        else if (Input.GetKey(KeyCode.DownArrow)) pitch = -1f;
+
+        // yaw left/right
+        if (Input.GetKey(KeyCode.LeftArrow)) yaw = -1f;
+        else if (Input.GetKey(KeyCode.RightArrow)) yaw = 1f;
+
+        // Combine the movement vectors and normalize
+        Vector3 combined = (forward + left + up).normalized;
+
+        // Add the 3 movement values, pitch, yaw to the actions out array
+        actionsOut[0] = combined.x;
+        actionsOut[1] = combined.y;
+        actionsOut[2] = combined.z;
+        actionsOut[3] = pitch;
+        actionsOut[4] = yaw;
+    }
+
+    /// <summary>
+    /// Prevent the agent from moving and taking actions
+    /// </summary>
+    public void FreezeAgent() 
+    {
+        Debug.Assert(trainingMode == false, "Freeze/Unfreeze not supported in training");
+        frozen = true;
+        rigidbody.Sleep();
+    }
+
+    /// <summary>
+    /// Resume the agent moving and take actions
+    /// </summary>
+    public void UnfreezeAgent() 
+    {
+        Debug.Assert(trainingMode == false, "Freeze/Unfreeze not supported in training");
+        frozen = false;
+        rigidbody.WakeUp();
     }
 
     /// <summary>
