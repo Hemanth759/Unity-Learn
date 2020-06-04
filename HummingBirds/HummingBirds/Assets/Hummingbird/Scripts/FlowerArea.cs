@@ -103,7 +103,6 @@ public class FlowerArea : MonoBehaviour
 
                     // Add the nectar collider to the lookup dictionary
                     nectarFlowerDictionary.Add(flower.nectorCollider, flower);
-
                     // Mote: there are no flowers that are children of other flowers
                 } 
                 else

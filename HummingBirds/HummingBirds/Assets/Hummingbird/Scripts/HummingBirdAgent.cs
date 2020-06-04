@@ -94,7 +94,7 @@ public class HummingBirdAgent : Agent
         }
 
         // Move the agent to a new rangom position
-        MoveToSageRandomPosition(inFrontOfFlower);
+        MoveToSafeRandomPosition(inFrontOfFlower);
 
         // Recalculate the nearest flower now that the agent has moved to a new random position
         UpdateNearestFlower();
@@ -282,7 +282,7 @@ public class HummingBirdAgent : Agent
     /// If in front of flower, also point the beak at the flower
     /// </summary>
     /// <param name="inFrontOfFlower">Whether to choose a spot in front of flower</param>
-    private void MoveToSageRandomPosition(bool inFrontOfFlower)
+    private void MoveToSafeRandomPosition(bool inFrontOfFlower)
     {
         bool sagePositionFound = false;
         int attemptsRemaining = 100; // Prevents the infinite loop
