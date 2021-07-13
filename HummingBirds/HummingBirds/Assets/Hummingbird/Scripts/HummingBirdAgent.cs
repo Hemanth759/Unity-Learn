@@ -61,7 +61,7 @@ public class HummingBirdAgent : Agent
     /// <summary>
     /// Initializes the agent
     /// </summary>
-    public override void Initialize() 
+    public override void Initialize()
     {
         rigidbody = this.GetComponent<Rigidbody>();
         flowerArea = this.GetComponentInParent<FlowerArea>();
@@ -72,7 +72,7 @@ public class HummingBirdAgent : Agent
 
     public override void OnEpisodeBegin()
     {
-        if (trainingMode) 
+        if (trainingMode)
         {
             // Only reset the flowers in training when there is one agent per area
             flowerArea.ResetFlowers();
@@ -105,7 +105,7 @@ public class HummingBirdAgent : Agent
     /// 
     /// vectorAction[i] represents:
     /// Index 0: move vector x (+1 = right, -1 = left)
-    /// Index 1: move vector y (+1 = up, -1 = dowm)
+    /// Index 1: move vector y (+1 = up, -1 = down)
     /// Index 2: move vector z (+1 = forward, -1 = backward)
     /// Index 3: pitch angle (+1 = pitch up, -1 = pitch down)
     /// Index 4: yaw angle (+1 = turn right, -1 = turn left)
@@ -149,10 +149,10 @@ public class HummingBirdAgent : Agent
     /// Collect vector observations from the environment
     /// </summary>
     /// <param name="sensor">The vector sersor</param>
-    public override void CollectObservations(VectorSensor sensor) 
+    public override void CollectObservations(VectorSensor sensor)
     {
         // If the nearest flower is null, Observe an empty array and return early
-        if (nearestFlower == null) 
+        if (nearestFlower == null)
         {
             sensor.AddObservation(new float[10]);
             return;
@@ -201,7 +201,7 @@ public class HummingBirdAgent : Agent
 
         // Forward/Backwards
         if (Input.GetKey(KeyCode.W)) forward = transform.forward;
-        else if(Input.GetKey(KeyCode.S)) forward = -transform.forward;
+        else if (Input.GetKey(KeyCode.S)) forward = -transform.forward;
 
         // Left/Right
         if (Input.GetKey(KeyCode.A)) left = -transform.right;
@@ -233,7 +233,7 @@ public class HummingBirdAgent : Agent
     /// <summary>
     /// Prevent the agent from moving and taking actions
     /// </summary>
-    public void FreezeAgent() 
+    public void FreezeAgent()
     {
         Debug.Assert(trainingMode == false, "Freeze/Unfreeze not supported in training");
         frozen = true;
@@ -243,7 +243,7 @@ public class HummingBirdAgent : Agent
     /// <summary>
     /// Resume the agent moving and take actions
     /// </summary>
-    public void UnfreezeAgent() 
+    public void UnfreezeAgent()
     {
         Debug.Assert(trainingMode == false, "Freeze/Unfreeze not supported in training");
         frozen = false;
@@ -257,12 +257,12 @@ public class HummingBirdAgent : Agent
     {
         foreach (Flower flower in flowerArea.Flowers)
         {
-            if (nearestFlower == null && flower.HasNector) 
+            if (nearestFlower == null && flower.HasNector)
             {
                 // No current nearest flower and this flower has nectar, so set to this flower
                 nearestFlower = flower;
             }
-            else if (flower.HasNector) 
+            else if (flower.HasNector)
             {
                 // Calculate distance to this flower and distance to the current nearest flower
                 float distanceToflower = Vector3.Distance(beakTip.position, flower.transform.position);
@@ -290,10 +290,10 @@ public class HummingBirdAgent : Agent
         Quaternion potentialRotation = new Quaternion();
 
         // Loop until safe place is found or we run out of attempts
-        while(!sagePositionFound && attemptsRemaining > 0)
+        while (!sagePositionFound && attemptsRemaining > 0)
         {
             --attemptsRemaining;
-            if (inFrontOfFlower) 
+            if (inFrontOfFlower)
             {
                 // Pick a random flower
                 Flower randomFlower = flowerArea.Flowers[UnityEngine.Random.Range(0, flowerArea.Flowers.Count)];
@@ -306,7 +306,7 @@ public class HummingBirdAgent : Agent
                 Vector3 toFlower = randomFlower.FlowerCenterPosition - potentialPosition;
                 potentialRotation = Quaternion.LookRotation(toFlower, Vector3.up);
             }
-            else 
+            else
             {
                 // Pick a random height from the ground 
                 float height = UnityEngine.Random.Range(1.2f, 2.5f);
@@ -315,7 +315,7 @@ public class HummingBirdAgent : Agent
                 float radius = UnityEngine.Random.Range(2f, 7f);
 
                 // Pick a random rotation rotated around the Y axis
-                Quaternion direction = Quaternion.Euler(0f, UnityEngine.Random.Range(-180f,180f),0f);
+                Quaternion direction = Quaternion.Euler(0f, UnityEngine.Random.Range(-180f, 180f), 0f);
 
                 // Combine height, radius and direction to pick a potential direction
                 potentialPosition = flowerArea.transform.position + Vector3.up * height + Vector3.forward * radius;
@@ -323,7 +323,7 @@ public class HummingBirdAgent : Agent
                 // Choose and set random starting pitch and yaw
                 float pitch = UnityEngine.Random.Range(-60f, 60f);
                 float yaw = UnityEngine.Random.Range(-180f, 180f);
-                potentialRotation = Quaternion.Euler(pitch, yaw, 0f); 
+                potentialRotation = Quaternion.Euler(pitch, yaw, 0f);
             }
 
             // Check if the potential position and rotation are no colliding with any game object
@@ -344,7 +344,7 @@ public class HummingBirdAgent : Agent
     /// Called when agent's collider enters a other trigger collider
     /// </summary>
     /// <param name="other">The Other trigger gaemeobject</param>
-    private void OnTriggerEnter(Collider other) 
+    private void OnTriggerEnter(Collider other)
     {
         TriggerEnterOrStay(other);
     }
@@ -353,9 +353,10 @@ public class HummingBirdAgent : Agent
     /// Called when agent's collider stays in a other trigger collider
     /// </summary>
     /// <param name="other">The Other trigger gaemeobject</param>
-    
-    private void OnTriggerStay(Collider other) {
-        TriggerEnterOrStay(other);    
+
+    private void OnTriggerStay(Collider other)
+    {
+        TriggerEnterOrStay(other);
     }
 
     /// <summary>
@@ -367,7 +368,7 @@ public class HummingBirdAgent : Agent
         // Check if agent is colliding with nectar
         if (collider.CompareTag("nectar"))
         {
-            Vector3 closestPointToBeakTip = collider.ClosestPoint(beakTip.position); 
+            Vector3 closestPointToBeakTip = collider.ClosestPoint(beakTip.position);
 
             // Check if the closest collision point is close to the beaktip
             // Note: a collision with anything but beaktip should not count
@@ -388,10 +389,10 @@ public class HummingBirdAgent : Agent
                     // Calculate reward for getting nectar
                     float bonus = 0.02f * Mathf.Clamp01(Vector3.Dot(transform.forward.normalized, -nearestFlower.FlowerUpVector.normalized));
                     AddReward(0.01f + bonus);
-                } 
+                }
 
                 // If the flower is empty update the nearest flower
-                if (!flower.HasNector) 
+                if (!flower.HasNector)
                 {
                     UpdateNearestFlower();
                 }
@@ -403,7 +404,7 @@ public class HummingBirdAgent : Agent
     /// Called when the agent collides with something solid
     /// </summary>
     /// <param name="collision">The collision info</param>
-    private void OnCollisionEnter(Collision collision) 
+    private void OnCollisionEnter(Collision collision)
     {
         if (trainingMode && collision.collider.CompareTag("boundary"))
         {
@@ -419,16 +420,16 @@ public class HummingBirdAgent : Agent
     {
         // Draw a line from the beatip to the nearest flower center
         if (nearestFlower != null)
-            Debug.DrawLine(beakTip.position, nearestFlower.FlowerCenterPosition, Color.green);    
+            Debug.DrawLine(beakTip.position, nearestFlower.FlowerCenterPosition, Color.green);
     }
 
     /// <summary>
     /// Called every 0.02 seconds
     /// </summary>
-    private void FixedUpdate() 
+    private void FixedUpdate()
     {
         // Avoids the csae where the nectar of the nearest flower is stolen by other bird and not getting updated in the nearest flower
-        if (nearestFlower != null && !nearestFlower.HasNector) 
+        if (nearestFlower != null && !nearestFlower.HasNector)
             UpdateNearestFlower();
     }
 }

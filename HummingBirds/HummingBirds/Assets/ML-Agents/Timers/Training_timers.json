@@ -1,1 +1,17 @@
-{"count":1,"self":39.1379616,"total":39.141998699999995,"children":null,"gauges":{},"metadata":{"timer_format_version":"0.1.0","start_time_seconds":"1591250490","unity_version":"2019.3.10f1","command_line_arguments":"D:\\Program files(HDD)\\Unity\\Editor\\2019.3.10f1\\Editor\\Unity.exe -projectpath D:\/Studies\/Others\/Unity Projects\/Unity Learn\/HummingBirds\/HummingBirds -useHub -hubIPC -cloudEnvironment production -hubSessionId e6068950-a61a-11ea-83c6-85183c22432e -accessToken bl3uqREVLdx5wQycOJY1M642vV8uCO9Vy_iN9YWRv5I012f","communication_protocol_version":"1.0.0","com.unity.ml-agents_version":"1.0.2-preview","scene_name":"Training","end_time_seconds":"1591250529"}}
+{
+    "count": 1,
+    "self": 39.1379616,
+    "total": 39.141998699999995,
+    "children": null,
+    "gauges": {},
+    "metadata": {
+        "timer_format_version": "0.1.0",
+        "start_time_seconds": "1591250490",
+        "unity_version": "2019.3.10f1",
+        "command_line_arguments": "D:\\Program files(HDD)\\Unity\\Editor\\2019.3.10f1\\Editor\\Unity.exe -projectpath D:\/Studies\/Others\/Unity Projects\/Unity Learn\/HummingBirds\/HummingBirds -useHub -hubIPC -cloudEnvironment production -hubSessionId e6068950-a61a-11ea-83c6-85183c22432e -accessToken bl3uqREVLdx5wQycOJY1M642vV8uCO9Vy_iN9YWRv5I012f",
+        "communication_protocol_version": "1.0.0",
+        "com.unity.ml-agents_version": "1.0.2-preview",
+        "scene_name": "Training",
+        "end_time_seconds": "1591250529"
+    }
+}
